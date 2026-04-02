@@ -1,0 +1,7 @@
+Book|B001|Java Programming|Deitel|2024|Education|Borrowed|USER-501
+Book|B002|Data Structures|Weiss|2023|Tech|Available|None
+Book|B003|Algorithms|Sedgewick|2022|Tech|Available|None
+Magazine|M001|Tech Monthly|Tech Publisher|2024|Technology|Available|None
+Magazine|M002|Science Weekly|Science Publisher|2023|Science|Available|None
+Journal|J001|AI Research|AI Institute|2024|Science|Available|None
+Journal|J002|Quantum Computing|Quantum Labs|2023|Science|Available|None

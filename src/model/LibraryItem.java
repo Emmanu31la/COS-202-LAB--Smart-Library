@@ -1,76 +1,62 @@
-// Tells Java that this file lives inside the 'model' folder
 package model;
+import java.io.Serializable;
 
-public abstract class LibraryItem {
-    // --- ENCAPSULATION ---
-    // We use 'private' so other parts of the program can't mess with these values directly.
-    private String id;
-    private String title;
-    private String author;
-    private int publicationYear;
-    private boolean isBorrowed;
+/**
+ * Abstract base class for all library resources.
+ * Implements Serializable for file saving and Comparable for sorting.
+ */
+public abstract class LibraryItem implements Serializable, Comparable<LibraryItem>, Borrowable {
+    private String id, title, author, category, status, borrowedBy;
+    private int year, borrowCount;
 
-    /**
-     * CONSTRUCTOR
-     * This is the setup method. When we create a new book or magazine 
-     * this method automatically runs to assign the initial values.
-    */
-
-    public LibraryItem(String id, String title, String author, int publicationYear) {
+    public LibraryItem(String id, String title, String author, int year, String category) {
         this.id = id;
         this.title = title;
         this.author = author;
-        this.publicationYear = publicationYear;
-        // A new item is never borrowed by default when first added to the library
-        this.isBorrowed = false;
+        this.year = year;
+        this.category = category;
+        this.status = "Available";
+        this.borrowedBy = "None";
+        this.borrowCount = 0;
     }
 
-    // --- GETTERS & SETTERS ---
-    // Because our variables are private, we need these public methods 
-    // to safely read (get) or update (set) the data.
-
-
-    public String getId () {
-        return id;
+    public void incrementBorrowCount() {
+        this.borrowCount++;
     }
 
-    public String getTitle() {
-        return title;
+    @Override
+    public int compareTo(LibraryItem other) {
+        return this.title.compareToIgnoreCase(other.title);
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    // --- Borrowable Interface Implementation ---
+    @Override
+    public void setBorrowedBy(String userId) {
+        this.borrowedBy = (userId == null || userId.isEmpty()) ? "None" : userId;
     }
 
-    public String getAuthor() {
-        return author;
+    @Override
+    public String getBorrowedBy() { return borrowedBy; }
+
+    @Override
+    public void setStatus(String status) { this.status = status; }
+
+    @Override
+    public String getStatus() { return status; }
+    // -------------------------------------------
+
+    public String getId() { return id; }
+    public String getTitle() { return title; }
+    public String getAuthor() { return author; }
+    public String getCategory() { return category; }
+    public int getYear() { return year; }
+    public int getBorrowCount() { return borrowCount; }
+
+    // Abstract method to force subclasses to define their type
+    public abstract String getType();
+
+    @Override
+    public String toString() {
+        return String.format("[%s] %s by %s (%d)", getType(), title, author, year);
     }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public int getPublicationYear() {
-        return publicationYear;
-    }
-
-    public void setPublicationYear(int publicationYear) {
-        this.publicationYear = publicationYear;
-    }
-
-    public boolean isBorrowed() {
-        return isBorrowed;
-    }
-
-    public void setBorrowed(boolean borrowed) {
-        isBorrowed = borrowed;
-    }
-
-    /*
-     * POLYMORPHISM PREPARATION
-     * This is an abstract method. 
-     * It forces every subclass (like Book or Magazine) to write their own specific version of this method.
-    */
-
-    public abstract String getDetails();
 }
